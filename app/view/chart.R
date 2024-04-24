@@ -5,6 +5,11 @@ box::use(
   shiny[h3, moduleServer, NS, tagList]
 )
 
+box::use(
+  app/logic/chart_utils[label_formatter],
+)
+
+
 
 # Ui ----------------------------------------------------------------------
 #' @export
@@ -28,7 +33,13 @@ server <- function(id, data) {
         echarts4r$group_by(species) |>
         echarts4r$e_chart(x = year) |>
         echarts4r$e_line(serie = population) |>
-        echarts4r$e_x_axis(year) |>
+        echarts4r$e_x_axis(
+          serie = year,
+          axisLabel = list(
+            # change numbers format
+            formatter = label_formatter
+          )
+        ) |>
         echarts4r$e_tooltip()
     )
 
